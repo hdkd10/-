@@ -1,0 +1,35 @@
+<!DOCTYPE html>  <html lang="ar">    <head>        <meta charset="UTF-8">      
+  <title>أداة تحميل الفيديو</title>      
+  <style>      
+    body { font-family: sans-serif; text-align: center; padding: 20px; background: #f2f2f2; }      
+    input, button, select { padding: 10px; font-size: 16px; margin-top: 10px; width: 80%; }      
+    video, img { max-width: 90%; margin-top: 20px; border-radius: 10px; }      
+    .card { background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 0 10px #aaa; max-width: 600px; margin: auto; }      
+  </style>      
+</head>      
+<body>      
+  <div class="card">      
+    <h2>🎬 أدخل رابط الفيديو من أي موقع</h2>      
+    <form method="POST">      
+      <input name="url" placeholder="مثال: https://www.youtube.com/watch?v=..." required>      
+      <button type="submit">جلب المعلومات 🔍</button>      
+    </form>  {% if msg %}      
+  <p style="color:red;">❌ {{ msg }}</p>      
+{% endif %}    {% if info %}    <h3>{{ info.title }}</h3>      
+  <img src="{{ info.thumbnail }}"><br>      
+  {% if preview %}      
+    <video controls>      
+      <source src="{{ preview.url }}" type="video/{{ preview.ext }}">      
+    </video>      
+  {% endif %}      <h4>⬇️ اختر الجودة والصيغة:</h4>      
+  <form method="GET" action="/download/{{ uid }}">      
+    <select name="format">      
+      {% for f in formats %}      
+        <option value="{{ f.format_id }}">{{ f.label }} - {{ f.filesize|default('??')|int // 1024 }}KB</option>      
+      {% endfor %}      
+    </select><br><br>      
+    <button type="submit">تحميل الآن</button>      
+  </form>      
+{% endif %}    </div>      
+</body>      
+</html>
